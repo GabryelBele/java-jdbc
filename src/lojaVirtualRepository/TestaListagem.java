@@ -1,9 +1,9 @@
 package lojaVirtualRepository;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class TestaListagem {
 
@@ -12,8 +12,8 @@ public class TestaListagem {
 		ConnectionFactory conexao = new ConnectionFactory();
 		Connection conn = conexao.recuperarConexao();
 
-		Statement stm = conn.createStatement();
-		stm.execute("SELECT id, nome,descricao FROM produto");
+		PreparedStatement stm = conn.prepareStatement("SELECT id, nome,descricao FROM produto");
+		stm.execute();
 
 		stm.getResultSet();
 
