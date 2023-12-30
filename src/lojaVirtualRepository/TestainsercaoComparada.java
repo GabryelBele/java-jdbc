@@ -8,42 +8,40 @@ import java.sql.Statement;
 
 public class TestainsercaoComparada {
 
-	public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException {
         String nome = "mouse'";
         String descricao = "mouse sem o(culos";
-       
+
         ConnectionFactory conexao = new ConnectionFactory();
-        Connection conn = conexao.recuperarConexao();
 
-        conn.setAutoCommit(false);
-        
-       try {
-           PreparedStatement result = conn.prepareStatement("INSERT INTO produto (nome, descricao) VALUES (?, ?)",
-                   Statement.RETURN_GENERATED_KEYS);
+        try (Connection conn = conexao.recuperarConexao()) {
+            conn.setAutoCommit(false);
 
-           adicionarVariavel(nome, descricao, result);
-           adicionarVariavel(nome, descricao, result);
-           
-           conn.commit();
-           
-           result.close();
-           conn.close();
-	} catch (Exception e) {
-		e.printStackTrace();
-		conn.rollback();
-	}
+            try (PreparedStatement result = conn.prepareStatement("INSERT INTO produto (nome, descricao) VALUES (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS)) {
+
+                adicionarVariavel(nome, descricao, result);
+                adicionarVariavel(nome, descricao, result);
+
+                conn.commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+                conn.rollback();
+            }
+        }
     }
 
-	private static void adicionarVariavel(String nome, String descricao, PreparedStatement stm) throws SQLException {
-		stm.setString(1, nome);
-		stm.setString(2, descricao);
+    private static void adicionarVariavel(String nome, String descricao, PreparedStatement stm) throws SQLException {
+        stm.setString(1, nome);
+        stm.setString(2, descricao);
 
-		stm.execute();
-		ResultSet rst = stm.getGeneratedKeys();
+        stm.execute();
 
-		while (rst.next()) {
-			Integer id = rst.getInt(1);
-			System.out.println("O id inserido foi: " + id);
-		}
-	}
+        try (ResultSet rst = stm.getGeneratedKeys()) {
+            while (rst.next()) {
+                Integer id = rst.getInt(1);
+                System.out.println("O id inserido foi: " + id);
+            }
+        }
+    }
 }
