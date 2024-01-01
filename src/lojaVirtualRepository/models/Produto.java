@@ -11,6 +11,12 @@ public class Produto {
 		this.descricao = descricao;
 	}
 
+	public Produto(Integer id, String nome, String descricao) {
+		this.id = id;
+		this.nome = nome;
+		this.descricao = descricao;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -34,11 +40,10 @@ public class Produto {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("O Produto criado foi: %d , %s, %s", 
-				this.id, this.nome, this.descricao);
+		return String.format("O Produto criado foi: %d , %s, %s", this.id, this.nome, this.descricao);
 	}
 
 }
