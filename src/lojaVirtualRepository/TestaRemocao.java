@@ -12,7 +12,7 @@ public class TestaRemocao {
 		Connection conn = conexao.recuperarConexao();
 
 		PreparedStatement stm = conn.prepareStatement("DELETE FROM produto WHERE id > ?");
-		stm.setInt(1, 2);
+		stm.setInt(1, 0);
 		stm.execute();
 
 		Integer linhasModificadas = stm.getUpdateCount();
