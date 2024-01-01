@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import lojaVirtualRepository.models.Categoria;
 import lojaVirtualRepository.models.Produto;
 
 public class ProdutoDao {
@@ -57,7 +58,28 @@ public class ProdutoDao {
 
 			}
 		}
-		
+
+		return produtos;
+	}
+
+	public List<Produto> buscar(Categoria result) throws SQLException {
+		List<Produto> produtos = new ArrayList<Produto>();
+
+		String sql = "SELECT id, nome,descricao FROM produto WHERE categoria_id = ? ";
+
+		try (PreparedStatement stm = connection.prepareStatement(sql);) {
+			stm.setInt(1, result.getId());
+			stm.execute();
+
+			ResultSet rst = stm.getResultSet();
+
+			while (rst.next()) {
+				Produto produto = new Produto(rst.getInt(1), rst.getString(2), rst.getString(3));
+				produtos.add(produto);
+
+			}
+		}
+
 		return produtos;
 	}
 
