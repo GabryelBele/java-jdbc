@@ -10,6 +10,7 @@ import java.util.List;
 import lojaVirtualRepository.models.Categoria;
 import lojaVirtualRepository.models.Produto;
 
+//category
 public class CategoryDao {
 
 	private Connection connection;
